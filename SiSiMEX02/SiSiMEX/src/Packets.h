@@ -14,6 +14,9 @@ enum class PacketType
 	RegisterMCCAck,
 	UnregisterMCC,
 	UnregisterMCCAck,
+	// MCP <-> YP
+	QueryMCCsForItem,
+	ReturnMCCsForItem,
 	Last
 };
 
@@ -34,24 +37,27 @@ public:
 		dstAgentId(NULL_AGENT_ID)
 	{ }
 	void Read(InputMemoryStream &stream) {
-		// TODO: Deserialize fields
 		stream.Read(packetType);
 		stream.Read(srcAgentId);
 		stream.Read(dstAgentId);
 	}
 	void Write(OutputMemoryStream &stream) {
-		// TODO: Serialize fields
 		stream.Write(packetType);
 		stream.Write(srcAgentId);
 		stream.Write(dstAgentId);
 	}
 };
 
-// TODO: PacketRegisterMCC
+
+// MCC <-> YP
+
+/**
+ * To register a MCC we need to know which resource/item is
+ * being provided by the MCC agent.
+ */
 class PacketRegisterMCC {
 public:
-	uint16_t itemId = NULL_ITEM_ID;
-public:
+	uint16_t itemId; // Which item has to be registered?
 	void Read(InputMemoryStream &stream) {
 		stream.Read(itemId);
 	}
@@ -59,26 +65,26 @@ public:
 		stream.Write(itemId);
 	}
 };
-// TODO: PacketRegisterMCCAck   <-- Do we need an actual data packet? Think...
-/*class PacketRegisterMCCAck {
 
-};*/
-// Not needed ^
+/**
+* The information is the same required for PacketRegisterMCC so...
+*/
+using PacketUnregisterMCC = PacketRegisterMCC;
 
-// TODO: PacketUnregisterMCC
-class PacketUnregisterMCC {
-public:
-	uint16_t itemId = NULL_ITEM_ID;
-public:
-	void Read(InputMemoryStream &stream) {
-		stream.Read(itemId);
-	}
-	void Write(OutputMemoryStream &stream) {
-		stream.Write(itemId);
-	}
-};
-// TODO: PacketUnregisterMCCAck <-- Do we need an actual data packet? Think...
-/*class PacketUnregisterMCCAck {
 
-};*/
-// Not needed ^
+// MCP <-> YP
+
+/**
+ * PacketQueryMCCsForItem
+ * The information is the same required for PacketRegisterMCC so...
+ */
+// TODO
+
+/**
+ * class PacketReturnMCCsForItem
+ * This packet is the response for PacketQueryMCCsForItem and
+ * is sent by an MCP (MultiCastPetitioner) agent.
+ * It contains a list of the addresses of MCC agents contributing
+ * with the item specified by the PacketQueryMCCsForItem.
+ */
+// TODO

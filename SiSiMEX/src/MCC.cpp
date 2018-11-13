@@ -96,12 +96,19 @@ bool MCC::negotiationAgreement() const
 bool MCC::registerIntoYellowPages()
 {
 	// TODO: Create a PacketHeader (make it in Packets.h)
-
+	PacketHeader packetHead;
+	packetHead.packetType = PacketType::RegisterMCC;
+	packetHead.srcAgentId = this->id();
+	packetHead.dstAgentId = NULL_AGENT_ID;
 	// TODO: Create a PacketRegisterMCC (make it in Packets.h)
-
+	PacketRegisterMCC packetRegisterMCC;
+	packetRegisterMCC.itemId = this->constraintItemId();
 	// TODO: Serialize both packets into an OutputMemoryStream
-
+	OutputMemoryStream ostream;
+	packetHead.Write(ostream);
+	packetRegisterMCC.Write(ostream);
 	// TODO: Send the stream (Agent::sendPacketToYellowPages)
+	this->sendPacketToYellowPages(ostream);
 
 	return false;
 }
@@ -109,12 +116,18 @@ bool MCC::registerIntoYellowPages()
 bool MCC::unregisterFromYellowPages()
 {
 	// TODO: Create a PacketHeader (make it in Packets.h)
-
+	PacketHeader packetHead;
+	packetHead.packetType = PacketType::UnregisterMCC;
+	packetHead.srcAgentId = this->id();
+	packetHead.dstAgentId = NULL_AGENT_ID;
 	// TODO: Create a PacketUnregisterMCC (make it in Packets.h)
-
+	PacketUnregisterMCC packetUnregisterMCC;
+	packetUnregisterMCC.itemId = this->contributedItemId();
 	// TODO: Serialize both packets into an OutputMemoryStream
-
+	OutputMemoryStream ostream;
+	packetHead.Write(ostream);
+	packetUnregisterMCC.Write(ostream);
 	// TODO: Send the stream (Agent::sendPacketToYellowPages)
-
+	this->sendPacketToYellowPages(ostream);
 	return false;
 }
