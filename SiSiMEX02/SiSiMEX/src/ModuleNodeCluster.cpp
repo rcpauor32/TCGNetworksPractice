@@ -328,7 +328,7 @@ void ModuleNodeCluster::OnAccepted(TCPSocketPtr socket)
 
 void ModuleNodeCluster::OnPacketReceived(TCPSocketPtr socket, InputMemoryStream & stream)
 {
-	//iLog << "OnPacketReceived";
+	iLog << "OnPacketReceived";
 
 	PacketHeader packetHead;
 	packetHead.Read(stream);

@@ -52,9 +52,16 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 
 		// TODO:
 		// 1) Deserialize the packet
+		PacketReturnMCCsForItem inPacketData;
+		inPacketData.Read(stream);
 		// 2) Log the received MCC agent locations
+		for (int i = 0; i < inPacketData.MCCLocations.size(); ++i) {
+			iLog << "MCC Location Id: " << inPacketData.MCCLocations[i].agentId << "\n  MCC Location Host: " << inPacketData.MCCLocations[i].hostIP << " - " << inPacketData.MCCLocations[i].hostPort;
+		}
 		// 3) Disconnect the socket
+		socket->Disconnect();
 		// 4) Set the next state (ST_ITERATING_OVER_MCCs) to start the search (for the next session)
+		this->setState(ST_ITERATING_OVER_MCCs);
 	}
 }
 
