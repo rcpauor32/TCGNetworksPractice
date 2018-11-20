@@ -11,7 +11,9 @@ enum State
 	ST_IDLE,
 	
 	// TODO: Other states
-
+	ST_NEGOTIATING,
+	ST_WAITINGUCCRESULT,
+	ST_UNREGISTERING,
 	ST_FINISHED
 };
 
@@ -143,9 +145,22 @@ void MCC::unregisterFromYellowPages()
 void MCC::createChildUCC()
 {
 	// TODO: Create a unicast contributor
+
+	if (_ucc != nullptr)
+		destroyChildUCC();
+
+	UCC* new_UCC = new UCC(node(), contributedItemId(), constraintItemId());
+
+	_ucc.operator= *new_UCC;
 }
+	
 
 void MCC::destroyChildUCC()
 {
 	// TODO: Destroy the unicast contributor child
+	if (_ucc != nullptr) 
+	{
+		_ucc->stop();
+		_ucc = nullptr;
+	}
 }

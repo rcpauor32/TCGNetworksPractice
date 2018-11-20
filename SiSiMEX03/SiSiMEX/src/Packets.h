@@ -20,9 +20,19 @@ enum class PacketType
 	
 	// MCP <-> MCC
 	// TODO
-	
+	RequestMCCList,
+	MccList,
+	NegotiationRequest,
+	NegotiationResponse,
+	Accept,
+
 	// UCP <-> UCC
 	// TODO
+	ItemRequest,
+	ConstraintRequest,
+	ConstraintResult,
+	ConstraintAck,
+
 	
 	Last
 };
@@ -111,6 +121,7 @@ public:
 // MCP <-> MCC
 
 //TODO
+
 
 
 

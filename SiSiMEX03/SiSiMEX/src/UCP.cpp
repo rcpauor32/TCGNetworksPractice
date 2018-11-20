@@ -4,7 +4,16 @@
 #include "ModuleAgentContainer.h"
 
 
-// TODO: Make an enum with the states
+// TODO: Make an enum with the statesç
+
+enum State {
+	ST_INIT,
+	ST_REQUESTINGITEM,
+	ST_RESOLVINGCONSTRAINT,
+	ST_SENDINGCONSTRAINT,
+	ST_NEGOTIATIONFINISHED
+
+};
 
 
 UCP::UCP(Node *node, uint16_t requestedItemId, uint16_t contributedItemId, const AgentLocation &uccLocation, unsigned int searchDepth) :

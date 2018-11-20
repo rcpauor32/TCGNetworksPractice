@@ -11,8 +11,10 @@ enum State
 	ST_ITERATING_OVER_MCCs,
 
 	// TODO: Other states
-
-	ST_NEGOTIATION_FINISHED
+	ST_WAITINGACCEPTANCE,
+	ST_NEGOTIATING,
+	ST_WAITINGUCPRESULT,
+	ST_FINISHED
 };
 
 MCP::MCP(Node *node, uint16_t requestedItemID, uint16_t contributedItemID, unsigned int searchDepth) :
