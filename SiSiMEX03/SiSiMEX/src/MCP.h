@@ -36,6 +36,7 @@ public:
 	//MCC iterate
 
 	bool IterateMCC();
+	bool AskNegotiation(AgentLocation &mcc);
 
 private:
 

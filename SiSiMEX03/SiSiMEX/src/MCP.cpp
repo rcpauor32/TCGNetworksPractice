@@ -61,27 +61,31 @@ bool MCP::IterateMCC()
 	for (int i = 0; i < _mccRegisters.size(); i++) 
 	{
 
-		PacketHeader packethead;
-		packethead.packetType = PacketType::NegotiationRequest;
-		packethead.dstAgentId = _mccRegisters[i].agentId;
-		packethead.srcAgentId = this->id();
-
-		PacketNegotiationRequest body;
-		body._requestedItemId = requestedItemId();
-		body._contributedItemId = contributedItemId();
-		
-		OutputMemoryStream stream; 
-		packethead.Write(stream);
-		body.Write(stream);
-
-		
-		sendPacketToAgent(_mccRegisters[i].hostIP, _mccRegisters[i].hostPort, stream);
+		AskNegotiation(_mccRegisters[i]);
 	}
 
 	setState(ST_WAITINGACCEPTANCE);
-
+	return true;
 }
 
+bool MCP::AskNegotiation(AgentLocation &mcc) 
+{
+	PacketHeader packethead;
+	packethead.packetType = PacketType::NegotiationRequest;
+	packethead.dstAgentId = _mccRegisters[i].agentId;
+	packethead.srcAgentId = this->id();
+
+	PacketNegotiationRequest body;
+	body._requestedItemId = requestedItemId();
+	body._contributedItemId = contributedItemId();
+
+	OutputMemoryStream stream;
+	packethead.Write(stream);
+	body.Write(stream);
+
+
+	return sendPacketToAgent(_mccRegisters[i].hostIP, _mccRegisters[i].hostPort, stream);
+}
 void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader, InputMemoryStream &stream)
 {
 	const PacketType packetType = packetHeader.packetType;
