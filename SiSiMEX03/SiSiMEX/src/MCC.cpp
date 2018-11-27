@@ -161,6 +161,6 @@ void MCC::destroyChildUCC()
 	if (_ucc != nullptr) 
 	{
 		_ucc->stop();
-		_ucc = nullptr;
+		_ucc.reset();
 	}
 }

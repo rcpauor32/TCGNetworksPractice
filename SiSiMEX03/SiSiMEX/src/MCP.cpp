@@ -56,6 +56,32 @@ void MCP::stop()
 	destroy();
 }
 
+bool MCP::IterateMCC()
+{
+	for (int i = 0; i < _mccRegisters.size(); i++) 
+	{
+
+		PacketHeader packethead;
+		packethead.packetType = PacketType::NegotiationRequest;
+		packethead.dstAgentId = _mccRegisters[i].agentId;
+		packethead.srcAgentId = this->id();
+
+		PacketNegotiationRequest body;
+		body._requestedItemId = requestedItemId();
+		body._contributedItemId = contributedItemId();
+		
+		OutputMemoryStream stream; 
+		packethead.Write(stream);
+		body.Write(stream);
+
+		
+		sendPacketToAgent(_mccRegisters[i].hostIP, _mccRegisters[i].hostPort, stream);
+	}
+
+	setState(ST_WAITINGACCEPTANCE);
+
+}
+
 void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader, InputMemoryStream &stream)
 {
 	const PacketType packetType = packetHeader.packetType;
@@ -102,11 +128,12 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 
 bool MCP::negotiationFinished() const
 {
-	return state() == ST_NEGOTIATION_FINISHED;
+	return state() == ST_WAITINGUCPRESULT;
 }
 
 bool MCP::negotiationAgreement() const
 {
+	
 	return false; // TODO: Did the child UCP find a solution?
 }
 

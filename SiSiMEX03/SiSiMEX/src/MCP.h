@@ -33,6 +33,10 @@ public:
 	// It returns the search depth of this MCP
 	unsigned int searchDepth() const { return _searchDepth; }
 
+	//MCC iterate
+
+	bool IterateMCC();
+
 private:
 
 	bool queryMCCsForItem(int itemId);
