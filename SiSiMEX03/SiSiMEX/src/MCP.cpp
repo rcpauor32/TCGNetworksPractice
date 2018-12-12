@@ -44,6 +44,17 @@ void MCP::update()
 		break;
 
 	// TODO: Handle other states
+	case ST_WAITINGACCEPTANCE:
+		break;
+
+	case ST_NEGOTIATING:
+		break;
+
+	case ST_WAITINGUCPRESULT:
+		break;
+
+	case ST_FINISHED:
+		break;
 
 	default:;
 	}
@@ -60,7 +71,6 @@ bool MCP::IterateMCC()
 {
 	for (int i = 0; i < _mccRegisters.size(); i++) 
 	{
-
 		AskNegotiation(_mccRegisters[i]);
 	}
 
@@ -72,7 +82,7 @@ bool MCP::AskNegotiation(AgentLocation &mcc)
 {
 	PacketHeader packethead;
 	packethead.packetType = PacketType::NegotiationRequest;
-	packethead.dstAgentId = _mccRegisters[i].agentId;
+	packethead.dstAgentId = mcc.agentId;
 	packethead.srcAgentId = this->id();
 
 	PacketNegotiationRequest body;
@@ -84,7 +94,7 @@ bool MCP::AskNegotiation(AgentLocation &mcc)
 	body.Write(stream);
 
 
-	return sendPacketToAgent(_mccRegisters[i].hostIP, _mccRegisters[i].hostPort, stream);
+	return sendPacketToAgent(mcc.hostIP, mcc.hostPort, stream);
 }
 void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader, InputMemoryStream &stream)
 {

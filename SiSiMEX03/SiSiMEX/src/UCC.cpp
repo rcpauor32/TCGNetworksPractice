@@ -35,7 +35,6 @@ void UCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 	switch (packetType)
 	{
 		// TODO: Handle packets
-		case PacketType::
 
 	default:
 		wLog << "OnPacketReceived() - Unexpected PacketType.";

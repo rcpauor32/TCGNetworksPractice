@@ -48,9 +48,18 @@ void MCC::update()
 		break;
 
 		// TODO: Handle other states
+	case ST_NEGOTIATING:
+		break;
 
+	case ST_WAITINGUCCRESULT:
+		break;
+
+	case ST_UNREGISTERING:
+		break;
+	
 	case ST_FINISHED:
 		destroy();
+		break;
 	}
 }
 
