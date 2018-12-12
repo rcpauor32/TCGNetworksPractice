@@ -20,5 +20,6 @@ public:
 
 	uint16_t contributedItemId;
 	uint16_t constraintItemId;
+
 };
 

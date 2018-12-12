@@ -44,17 +44,28 @@ void MCC::update()
 		break;
 
 	case ST_REGISTERING:
-		// See OnPacketReceived()
+		// See OnPacketReceived() -> PacketType::RegisterAck
 		break;
 
 		// TODO: Handle other states
+	case ST_IDLE:
+		// See OnPacketReceived() -> PacketType::NegotiationRequest
+		break;
 	case ST_NEGOTIATING:
+		if (negotiationAgreement() == true) {
+			setState(ST_UNREGISTERING);
+		}
+		else {
+			setState(ST_IDLE);
+		}
 		break;
 
 	case ST_WAITINGUCCRESULT:
 		break;
 
 	case ST_UNREGISTERING:
+		unregisterFromYellowPages();
+		setState(ST_FINISHED);
 		break;
 	
 	case ST_FINISHED:
@@ -92,7 +103,18 @@ void MCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		break;
 
 	// TODO: Handle other packets
-
+	case PacketType::NegotiationRequest:
+		if (state() == ST_IDLE) 
+		{
+			createChildUCC();
+		
+			sendAcceptNegotiation(socket, packetHeader.srcAgentId);
+		}
+		else
+		{
+			wLog << "OnPacketReceived() - PacketType::NegotiationRequest was unexpected.";
+		}
+		break;
 	default:
 		wLog << "OnPacketReceived() - Unexpected PacketType.";
 	}
@@ -113,6 +135,22 @@ bool MCC::negotiationAgreement() const
 	// If this agent finished, means that it was an agreement
 	// Otherwise, it would return to state ST_IDLE
 	return negotiationFinished();
+}
+
+bool MCC::sendAcceptNegotiation(TCPSocketPtr socket, uint16_t dstID)
+{
+	PacketHeader packetHead;
+	packetHead.packetType = PacketType::Accept;
+	packetHead.srcAgentId = id();
+	packetHead.dstAgentId = dstID;
+
+	// Serialize
+	OutputMemoryStream stream;
+	packetHead.Write(stream);
+
+	socket->SendPacket(stream.GetBufferPtr(), stream.GetSize());
+
+	return false;
 }
 
 bool MCC::registerIntoYellowPages()
@@ -154,13 +192,11 @@ void MCC::unregisterFromYellowPages()
 void MCC::createChildUCC()
 {
 	// TODO: Create a unicast contributor
-
 	if (_ucc != nullptr)
 		destroyChildUCC();
 
-	UCC* new_UCC = new UCC(node(), contributedItemId(), constraintItemId());
+	_ucc = App->agentContainer->createUCC(node(), contributedItemId(), constraintItemId());
 
-	_ucc.operator= *new_UCC;
 }
 	
 

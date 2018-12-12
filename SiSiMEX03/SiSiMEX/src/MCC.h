@@ -31,6 +31,8 @@ public:
 	// Whether or not there was a negotiation agreement
 	bool negotiationAgreement() const;
 
+	bool sendAcceptNegotiation(TCPSocketPtr socket, uint16_t dstID);
+
 private:
 
 	bool registerIntoYellowPages();

@@ -142,8 +142,46 @@ class PacketNegotiationRequest
 
 };
 
-
-
 // UCP <-> UCC
 
 // TODO
+
+class PacketItemRequest {
+public:
+	uint16_t _requestedItemId;
+
+	void Read(InputMemoryStream stream)
+	{
+		stream.Read(_requestedItemId);
+	}
+	void Write(OutputMemoryStream stream)
+	{
+		stream.Write(_requestedItemId);
+	}
+};
+
+class PacketConstraintRequest {
+public:
+	uint16_t _constraintItemId;
+	void Read(InputMemoryStream stream)
+	{
+		stream.Read(_constraintItemId);
+	}
+	void Write(OutputMemoryStream stream)
+	{
+		stream.Write(_constraintItemId);
+	}
+};
+
+class PacketConstraintResult {
+public:
+	uint16_t _itemId;
+	void Read(InputMemoryStream stream)
+	{
+		stream.Read(_itemId);
+	}
+	void Write(OutputMemoryStream stream)
+	{
+		stream.Write(_itemId);
+	}
+};
