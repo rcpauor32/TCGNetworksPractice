@@ -90,6 +90,7 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		if (packetbody._constraintItemId == this->contributedItemId) {
 			agreement = true;
 			SendConstraintResult(true);
+			setState(ST_SENDINGCONSTRAINT);
 		}
 		else
 		{
