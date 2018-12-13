@@ -73,6 +73,14 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 	{
 		// TODO: Handle packets
 	case PacketType::ConstraintRequest:
+		PacketConstraintRequest packetbody;
+		packetbody.Read(stream);
+		if (packetbody._constraintItemId == this->contributedItemId) {
+			//De puta madre tete
+		}
+		else {
+			//Nope
+		}
 		break;
 
 	case PacketType::ConstraintAck:
