@@ -54,7 +54,7 @@ void MCC::update()
 		break;
 	case ST_NEGOTIATING:
 		if (negotiationAgreement() == true) {
-
+			Exchange();
 			setState(ST_UNREGISTERING);
 		}
 		else {
@@ -220,4 +220,10 @@ void MCC::destroyChildUCC()
 		_ucc->stop();
 		_ucc.reset();
 	}
+}
+
+void MCC::Exchange()
+{
+	node()->itemList().addItem((int)constraintItemId());
+	node()->itemList().removeItem((int)contributedItemId());
 }

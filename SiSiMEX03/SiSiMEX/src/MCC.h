@@ -43,6 +43,8 @@ private:
 
 	void destroyChildUCC();
 
+	void Exchange();
+
 	uint16_t _contributedItemId; /**< The contributed item. */
 	uint16_t _constraintItemId; /**< The constraint item. */
 
