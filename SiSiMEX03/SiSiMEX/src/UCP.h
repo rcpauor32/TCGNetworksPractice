@@ -20,8 +20,10 @@ public:
 	UCP* asUCP() override { return this; }
 	void OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader, InputMemoryStream &stream) override;
 	bool SendItemRequest();
+	bool SendConstraintResult(bool res);
 	// TODO
 	int negotiationAgreement();
+
 
 	uint16_t requestedItemId;
 	uint16_t contributedItemId;

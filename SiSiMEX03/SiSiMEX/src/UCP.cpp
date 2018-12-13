@@ -49,6 +49,7 @@ void UCP::update()
 		break;
 	
 	case ST_SENDINGCONSTRAINT:
+
 		break;
 	
 	case ST_NEGOTIATIONFINISHED:
@@ -76,10 +77,12 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		PacketConstraintRequest packetbody;
 		packetbody.Read(stream);
 		if (packetbody._constraintItemId == this->contributedItemId) {
-			//De puta madre tete
+			
+			SendConstraintResult(true);
 		}
-		else {
-			//Nope
+		else
+		{
+			SendConstraintResult(false);
 		}
 		break;
 
@@ -106,6 +109,23 @@ bool UCP::SendItemRequest()
 
 	return sendPacketToAgent(uccLocation.hostIP, uccLocation.hostPort, stream);
 }
+
+bool UCP::SendConstraintResult(bool res)
+{
+	PacketHeader packethead;
+	packethead.packetType = PacketType::ConstraintResult;
+	packethead.dstAgentId = uccLocation.agentId;
+	packethead.srcAgentId = this->id();
+
+	PacketConstraintResult body;
+	body.accepted = res;
+	OutputMemoryStream stream;
+	packethead.Write(stream);
+	body.Write(stream);
+
+	return sendPacketToAgent(uccLocation.hostIP,uccLocation.hostPort,stream);
+}
+
 
 int UCP::negotiationAgreement()
 {

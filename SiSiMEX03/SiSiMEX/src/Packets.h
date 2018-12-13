@@ -189,13 +189,13 @@ public:
 
 class PacketConstraintResult {
 public:
-	uint16_t _itemId;
+	bool accepted;
 	void Read(InputMemoryStream &stream)
 	{
-		stream.Read(_itemId);
+		stream.Read(accepted);
 	}
 	void Write(OutputMemoryStream &stream)
 	{
-		stream.Write(_itemId);
+		stream.Write(accepted);
 	}
 };
