@@ -53,7 +53,6 @@ void MCP::update()
 			setState(ST_FINISHED);
 			_mccRegisterIndex = 0;
 		}
-		_mccRegisterIndex++;
 		break;
 
 	// TODO: Handle other states
@@ -66,6 +65,7 @@ void MCP::update()
 		}
 		else if (_ucp->negotiationAgreement() == 0) { // Failed Negotiation
 			setState(ST_ITERATING_OVER_MCCs);
+			_mccRegisterIndex++;
 		}
 		else { // Negotiating
 
@@ -165,6 +165,7 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 			}
 			else {
 				setState(ST_ITERATING_OVER_MCCs);
+				_mccRegisterIndex++;
 			}
 		}
 		break;
