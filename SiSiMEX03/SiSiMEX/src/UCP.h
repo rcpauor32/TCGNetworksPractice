@@ -22,8 +22,7 @@ public:
 	bool SendItemRequest();
 	bool SendConstraintResult(bool res);
 	// TODO
-	int negotiationAgreement();
-
+	int agreement = -1; // -1 = 'Negotiating' ; 0 = 'Failed Negotiation' ; 1 = 'Negotiation Completed'
 
 	uint16_t requestedItemId;
 	uint16_t contributedItemId;

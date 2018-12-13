@@ -37,7 +37,7 @@ void UCP::update()
 	{
 		// TODO: Handle states
 	case ST_INIT:
-
+		agreement = -1;
 		SendItemRequest();
 		setState(ST_REQUESTINGITEM);
 		break;
@@ -46,6 +46,16 @@ void UCP::update()
 		break;
 
 	case ST_RESOLVINGCONSTRAINT:
+		if (_mcp->negotiationFinished()) {
+			if (_mcp->negotiationAgreement()) {
+				SendConstraintResult(true);
+				agreement = true;
+			}
+			else {
+				SendConstraintResult(false);
+				agreement = false;
+			}
+		}
 		break;
 	
 	case ST_SENDINGCONSTRAINT:
@@ -77,16 +87,18 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		PacketConstraintRequest packetbody;
 		packetbody.Read(stream);
 		if (packetbody._constraintItemId == this->contributedItemId) {
-			
+			agreement = true;
 			SendConstraintResult(true);
 		}
 		else
 		{
 			if (searchDepth >= MAX_SEARCH_DEPTH) {
 				SendConstraintResult(false);
+				agreement = false;
 				setState(ST_SENDINGCONSTRAINT);
 			}
 			else {
+				createChildMCP();
 				setState(ST_RESOLVINGCONSTRAINT);
 			}
 		}
@@ -130,14 +142,6 @@ bool UCP::SendConstraintResult(bool res)
 	body.Write(stream);
 
 	return sendPacketToAgent(uccLocation.hostIP,uccLocation.hostPort,stream);
-}
-
-
-int UCP::negotiationAgreement()
-{
-	int ret = -1;
-
-	return ret;
 }
 
 void UCP::createChildMCP()
