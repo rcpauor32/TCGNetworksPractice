@@ -82,7 +82,13 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		}
 		else
 		{
-			SendConstraintResult(false);
+			if (searchDepth >= MAX_SEARCH_DEPTH) {
+				SendConstraintResult(false);
+				setState(ST_SENDINGCONSTRAINT);
+			}
+			else {
+				setState(ST_RESOLVINGCONSTRAINT);
+			}
 		}
 		break;
 
