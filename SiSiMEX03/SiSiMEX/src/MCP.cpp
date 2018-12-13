@@ -61,6 +61,9 @@ void MCP::update()
 		break;
 
 	case ST_NEGOTIATING:
+		if (_ucp->negotiationAgreement() == true) {
+			setState(ST_FINISHED);
+		}
 		break;
 
 	case ST_WAITINGUCPRESULT:
@@ -148,13 +151,15 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 
 	// TODO: Handle other packets
 	case PacketType::NegotiationResponse:
-		PacketNegotiationResponse packetBody;
-		packetBody.Read(stream);
-		if (packetBody.acceptNegotiation == true) {
-
-		}
-		else {
-			setState(ST_ITERATING_OVER_MCCs);
+		if (state() == ST_WAITING_ACCEPTANCE) {
+			PacketNegotiationResponse packetBody;
+			packetBody.Read(stream);
+			if (packetBody.acceptNegotiation == true) {
+				createChildUCP(packetBody.uccLoc);
+			}
+			else {
+				setState(ST_ITERATING_OVER_MCCs);
+			}
 		}
 		break;
 	default:
@@ -193,14 +198,17 @@ bool MCP::queryMCCsForItem(int itemId)
 	return sendPacketToYellowPages(stream);
 }
 
-void MCP::createChildUCP()
+void MCP::createChildUCP(AgentLocation &ucc)
 {
 	if (_ucp != nullptr)
 		destroyChildUCP();
-	//_ucp = App->agentContainer->createUCP(node(), requestedItemId(), contributedItemId(), );
+	_ucp = App->agentContainer->createUCP(node(), requestedItemId(), contributedItemId(), ucc, searchDepth());
 }
 
 void MCP::destroyChildUCP()
 {
-
+	if (_ucp != nullptr) {
+		_ucp->stop();
+		_ucp.reset();
+	}
 }

@@ -104,16 +104,19 @@ void MCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 
 	// TODO: Handle other packets
 	case PacketType::NegotiationRequest:
+		AgentLocation uccLoc;
 		if (state() == ST_IDLE) 
 		{
 			createChildUCC();
-		
-			sendAcceptNegotiation(socket, packetHeader.srcAgentId, true);
+			uccLoc.agentId = _ucc->id();
+			uccLoc.hostIP = socket->RemoteAddress().GetIPString();
+			uccLoc.hostPort = LISTEN_PORT_AGENTS;
+			sendAcceptNegotiation(socket, packetHeader.srcAgentId, true, uccLoc);
 			setState(ST_NEGOTIATING);
 		}
 		else
 		{
-			sendAcceptNegotiation(socket, packetHeader.srcAgentId, false);
+			sendAcceptNegotiation(socket, packetHeader.srcAgentId, false, uccLoc);
 			wLog << "OnPacketReceived() - PacketType::NegotiationRequest was unexpected.";
 		}
 		break;
@@ -139,7 +142,7 @@ bool MCC::negotiationAgreement() const
 	return negotiationFinished();
 }
 
-bool MCC::sendAcceptNegotiation(TCPSocketPtr socket, uint16_t dstID, bool accept)
+bool MCC::sendAcceptNegotiation(TCPSocketPtr socket, uint16_t dstID, bool accept, AgentLocation &uccLoc)
 {
 	PacketHeader packetHead;
 	packetHead.packetType = PacketType::NegotiationResponse;

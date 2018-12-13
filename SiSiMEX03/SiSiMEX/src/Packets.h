@@ -145,11 +145,14 @@ class PacketNegotiationRequest
 class PacketNegotiationResponse {
 public:
 	bool acceptNegotiation;
+	AgentLocation uccLoc;
 	void Read(InputMemoryStream &stream) {
 		stream.Read(acceptNegotiation);
+		uccLoc.Read(stream);
 	}
 	void Write(OutputMemoryStream &stream) {
 		stream.Write(acceptNegotiation);
+		uccLoc.Write(stream);
 	}
 };
 

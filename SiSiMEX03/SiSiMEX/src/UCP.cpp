@@ -75,3 +75,8 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		wLog << "OnPacketReceived() - Unexpected PacketType.";
 	}
 }
+
+bool UCP::negotiationAgreement()
+{
+	return state() == ST_NEGOTIATIONFINISHED;
+}

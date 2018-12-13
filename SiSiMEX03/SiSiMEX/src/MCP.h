@@ -51,7 +51,7 @@ private:
 	unsigned int _searchDepth;
 
 	// TODO: Add extra attributes and methods?
-	void createChildUCP();
+	void createChildUCP(AgentLocation &ucc);
 	void destroyChildUCP();
 
 	UCPPtr _ucp;
