@@ -19,7 +19,7 @@ public:
 	void stop() override;
 	UCP* asUCP() override { return this; }
 	void OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader, InputMemoryStream &stream) override;
-
+	bool SendItemRequest();
 	// TODO
 	int negotiationAgreement();
 

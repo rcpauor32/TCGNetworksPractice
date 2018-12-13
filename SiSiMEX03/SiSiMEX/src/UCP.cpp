@@ -38,6 +38,8 @@ void UCP::update()
 		// TODO: Handle states
 	case ST_INIT:
 
+		SendItemRequest();
+		setState(ST_REQUESTINGITEM);
 		break;
 
 	case ST_REQUESTINGITEM:
@@ -81,6 +83,22 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 	}
 }
 
+bool UCP::SendItemRequest()
+{
+	PacketHeader packethead;
+	packethead.packetType = PacketType::ItemRequest;
+	packethead.dstAgentId = uccLocation.agentId;
+	packethead.srcAgentId = this->id();
+
+	PacketItemRequest body;
+	body._requestedItemId = this->requestedItemId;
+	OutputMemoryStream stream;
+	packethead.Write(stream);
+	body.Write(stream);
+
+	return sendPacketToAgent(uccLocation.hostIP, uccLocation.hostPort, stream);
+}
+
 int UCP::negotiationAgreement()
 {
 	int ret = -1;
@@ -102,3 +120,5 @@ void UCP::destroyChildMCP()
 		_mcp.reset();
 	}
 }
+
+
