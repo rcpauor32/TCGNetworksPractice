@@ -23,5 +23,15 @@ public:
 	// TODO
 	int negotiationAgreement();
 
+	uint16_t requestedItemId;
+	uint16_t contributedItemId;
+	AgentLocation uccLocation;
+	unsigned int searchDepth;
+
+	void createChildMCP();
+	void destroyChildMCP();
+
+	MCPPtr _mcp;
+
 };
 

@@ -65,7 +65,7 @@ void MCP::update()
 			setState(ST_FINISHED);
 		}
 		else if (_ucp->negotiationAgreement() == 0) { // Failed Negotiation
-
+			setState(ST_ITERATING_OVER_MCCs);
 		}
 		else { // Negotiating
 
@@ -85,7 +85,7 @@ void MCP::update()
 void MCP::stop()
 {
 	// TODO: Destroy the underlying search hierarchy (UCP->MCP->UCP->...)
-
+	destroyChildUCP();
 	destroy();
 }
 

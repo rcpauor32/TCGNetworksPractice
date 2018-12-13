@@ -20,6 +20,11 @@ UCP::UCP(Node *node, uint16_t requestedItemId, uint16_t contributedItemId, const
 	Agent(node)
 {
 	// TODO: Save input parameters
+	this->requestedItemId = requestedItemId;
+	this->contributedItemId = contributedItemId;
+	this->uccLocation = uccLocation;
+	this->searchDepth = searchDepth;
+
 }
 
 UCP::~UCP()
@@ -32,7 +37,7 @@ void UCP::update()
 	{
 		// TODO: Handle states
 	case ST_INIT:
-		
+
 		break;
 
 	case ST_REQUESTINGITEM:
@@ -54,7 +59,7 @@ void UCP::update()
 void UCP::stop()
 {
 	// TODO: Destroy search hierarchy below this agent
-
+	destroyChildMCP();
 	destroy();
 }
 
@@ -81,4 +86,19 @@ int UCP::negotiationAgreement()
 	int ret = -1;
 
 	return ret;
+}
+
+void UCP::createChildMCP()
+{
+	if (_mcp != nullptr)
+		destroyChildMCP();
+	_mcp = App->agentContainer->createMCP(node(), requestedItemId, contributedItemId, searchDepth);
+}
+
+void UCP::destroyChildMCP()
+{
+	if (_mcp != nullptr) {
+		_mcp->stop();
+		_mcp.reset();
+	}
 }
