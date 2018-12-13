@@ -107,6 +107,7 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		break;
 
 	case PacketType::ConstraintAck:
+		setState(ST_NEGOTIATIONFINISHED);
 		break;
 
 	default:

@@ -18,6 +18,8 @@ public:
 
 	// TODO
 
+	int agreement = -1;
+
 	uint16_t contributedItemId;
 	uint16_t constraintItemId;
 

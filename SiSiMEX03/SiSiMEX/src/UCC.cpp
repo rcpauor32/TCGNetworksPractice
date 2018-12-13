@@ -62,21 +62,23 @@ void UCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		if (state() == ST_WAITING_ITEM_CONSTRAINT) {
 			PacketConstraintResult packetBody;
 			packetBody.Read(stream);
-			// Checking Item ID
-			if (packetBody._itemId == constraintItemId) {
-				// Sending ConstraintAck to UCP
-				PacketHeader oPacketHeader;
-				oPacketHeader.packetType = PacketType::ConstraintAck;
-				oPacketHeader.srcAgentId = id();
-				oPacketHeader.dstAgentId = packetHeader.srcAgentId;
-				OutputMemoryStream ostream;
-				oPacketHeader.Write(ostream);
-
-				socket->Send(ostream.GetBufferPtr(), ostream.GetSize());
-				
-				setState(ST_NEGOTIATION_FINISHED);
-
+			if (packetBody.accepted == true) {
+				agreement = true;
 			}
+			else {
+				agreement = false;
+			}
+			// Sending ConstraintAck to UCP
+			PacketHeader oPacketHeader;
+			oPacketHeader.packetType = PacketType::ConstraintAck;
+			oPacketHeader.srcAgentId = id();
+			oPacketHeader.dstAgentId = packetHeader.srcAgentId;
+			OutputMemoryStream ostream;
+			oPacketHeader.Write(ostream);
+
+			socket->Send(ostream.GetBufferPtr(), ostream.GetSize());
+			
+			setState(ST_NEGOTIATION_FINISHED);
 		}
 		break;
 

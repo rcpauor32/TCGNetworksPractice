@@ -60,10 +60,10 @@ void MCP::update()
 		break;
 
 	case ST_NEGOTIATING:
-		if (_ucp->negotiationAgreement() == 1) { // Completed Negotiation
+		if (_ucp->agreement == true) { // Completed Negotiation
 			setState(ST_FINISHED);
 		}
-		else if (_ucp->negotiationAgreement() == 0) { // Failed Negotiation
+		else if (_ucp->agreement == false) { // Failed Negotiation
 			setState(ST_ITERATING_OVER_MCCs);
 			_mccRegisterIndex++;
 		}
@@ -182,7 +182,7 @@ bool MCP::negotiationFinished() const
 bool MCP::negotiationAgreement() const
 {
 	
-	return false; // TODO: Did the child UCP find a solution?
+	return _ucp->agreement == true; // TODO: Did the child UCP find a solution?
 }
 
 
