@@ -82,6 +82,7 @@ void MCP::update()
 	}
 }
 
+
 void MCP::stop()
 {
 	// TODO: Destroy the underlying search hierarchy (UCP->MCP->UCP->...)
@@ -209,7 +210,7 @@ void MCP::createChildUCP(AgentLocation &ucc)
 {
 	if (_ucp != nullptr)
 		destroyChildUCP();
-	_ucp = App->agentContainer->createUCP(node(), requestedItemId(), contributedItemId(), ucc, searchDepth());
+	_ucp = App->agentContainer->createUCP(node(), requestedItemId(), contributedItemId(), ucc, searchDepth() + 1);
 }
 
 void MCP::destroyChildUCP()
