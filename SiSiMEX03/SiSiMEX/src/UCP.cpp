@@ -55,6 +55,7 @@ void UCP::update()
 				SendConstraintResult(false);
 				agreement = false;
 			}
+			setState(ST_SENDINGCONSTRAINT);
 		}
 		break;
 	
