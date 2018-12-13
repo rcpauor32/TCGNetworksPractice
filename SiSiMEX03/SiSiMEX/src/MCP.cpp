@@ -45,7 +45,15 @@ void MCP::update()
 
 	case ST_ITERATING_OVER_MCCs:
 		// TODO: Handle this state
-		
+		if (_mccRegisterIndex < _mccRegisters.size()) {
+			AskNegotiation(_mccRegisters[_mccRegisterIndex]);
+			setState(ST_WAITING_ACCEPTANCE);
+		}
+		else {
+			setState(ST_FINISHED);
+			_mccRegisterIndex = 0;
+		}
+		_mccRegisterIndex++;
 		break;
 
 	// TODO: Handle other states
@@ -139,7 +147,16 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		break;
 
 	// TODO: Handle other packets
+	case PacketType::NegotiationResponse:
+		PacketNegotiationResponse packetBody;
+		packetBody.Read(stream);
+		if (packetBody.acceptNegotiation == true) {
 
+		}
+		else {
+			setState(ST_ITERATING_OVER_MCCs);
+		}
+		break;
 	default:
 		wLog << "OnPacketReceived() - Unexpected PacketType.";
 	}
@@ -174,4 +191,16 @@ bool MCP::queryMCCsForItem(int itemId)
 
 	// 1) Ask YP for MCC hosting the item 'itemId'
 	return sendPacketToYellowPages(stream);
+}
+
+void MCP::createChildUCP()
+{
+	if (_ucp != nullptr)
+		destroyChildUCP();
+	//_ucp = App->agentContainer->createUCP(node(), requestedItemId(), contributedItemId(), );
+}
+
+void MCP::destroyChildUCP()
+{
+
 }

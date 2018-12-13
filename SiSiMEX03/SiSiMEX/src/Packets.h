@@ -129,17 +129,28 @@ class PacketNegotiationRequest
 		uint16_t _requestedItemId;
 		uint16_t _contributedItemId;
 
-		void Read(InputMemoryStream stream) 
+		void Read(InputMemoryStream &stream) 
 		{
 			stream.Read(_requestedItemId);
 			stream.Read(_contributedItemId);
 		}
-		void Write(OutputMemoryStream stream) 
+		void Write(OutputMemoryStream &stream) 
 		{
 			stream.Write(_requestedItemId);
 			stream.Write(_contributedItemId);
 		}
 
+};
+
+class PacketNegotiationResponse {
+public:
+	bool acceptNegotiation;
+	void Read(InputMemoryStream &stream) {
+		stream.Read(acceptNegotiation);
+	}
+	void Write(OutputMemoryStream &stream) {
+		stream.Write(acceptNegotiation);
+	}
 };
 
 // UCP <-> UCC
@@ -150,11 +161,11 @@ class PacketItemRequest {
 public:
 	uint16_t _requestedItemId;
 
-	void Read(InputMemoryStream stream)
+	void Read(InputMemoryStream &stream)
 	{
 		stream.Read(_requestedItemId);
 	}
-	void Write(OutputMemoryStream stream)
+	void Write(OutputMemoryStream &stream)
 	{
 		stream.Write(_requestedItemId);
 	}
@@ -163,11 +174,11 @@ public:
 class PacketConstraintRequest {
 public:
 	uint16_t _constraintItemId;
-	void Read(InputMemoryStream stream)
+	void Read(InputMemoryStream &stream)
 	{
 		stream.Read(_constraintItemId);
 	}
-	void Write(OutputMemoryStream stream)
+	void Write(OutputMemoryStream &stream)
 	{
 		stream.Write(_constraintItemId);
 	}
@@ -176,11 +187,11 @@ public:
 class PacketConstraintResult {
 public:
 	uint16_t _itemId;
-	void Read(InputMemoryStream stream)
+	void Read(InputMemoryStream &stream)
 	{
 		stream.Read(_itemId);
 	}
-	void Write(OutputMemoryStream stream)
+	void Write(OutputMemoryStream &stream)
 	{
 		stream.Write(_itemId);
 	}

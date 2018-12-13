@@ -108,11 +108,12 @@ void MCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		{
 			createChildUCC();
 		
-			sendAcceptNegotiation(socket, packetHeader.srcAgentId);
+			sendAcceptNegotiation(socket, packetHeader.srcAgentId, true);
 			setState(ST_NEGOTIATING);
 		}
 		else
 		{
+			sendAcceptNegotiation(socket, packetHeader.srcAgentId, false);
 			wLog << "OnPacketReceived() - PacketType::NegotiationRequest was unexpected.";
 		}
 		break;
@@ -138,16 +139,20 @@ bool MCC::negotiationAgreement() const
 	return negotiationFinished();
 }
 
-bool MCC::sendAcceptNegotiation(TCPSocketPtr socket, uint16_t dstID)
+bool MCC::sendAcceptNegotiation(TCPSocketPtr socket, uint16_t dstID, bool accept)
 {
 	PacketHeader packetHead;
-	packetHead.packetType = PacketType::Accept;
+	packetHead.packetType = PacketType::NegotiationResponse;
 	packetHead.srcAgentId = id();
 	packetHead.dstAgentId = dstID;
+
+	PacketNegotiationResponse packetBody;
+	packetBody.acceptNegotiation = accept;
 
 	// Serialize
 	OutputMemoryStream stream;
 	packetHead.Write(stream);
+	packetBody.Write(stream);
 
 	socket->SendPacket(stream.GetBufferPtr(), stream.GetSize());
 
