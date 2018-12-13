@@ -76,7 +76,9 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 	}
 }
 
-bool UCP::negotiationAgreement()
+int UCP::negotiationAgreement()
 {
-	return state() == ST_NEGOTIATIONFINISHED;
+	int ret = -1;
+
+	return ret;
 }

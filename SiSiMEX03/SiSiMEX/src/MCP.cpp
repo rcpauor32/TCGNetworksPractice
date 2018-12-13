@@ -61,8 +61,14 @@ void MCP::update()
 		break;
 
 	case ST_NEGOTIATING:
-		if (_ucp->negotiationAgreement() == true) {
+		if (_ucp->negotiationAgreement() == 1) { // Completed Negotiation
 			setState(ST_FINISHED);
+		}
+		else if (_ucp->negotiationAgreement() == 0) { // Failed Negotiation
+
+		}
+		else { // Negotiating
+
 		}
 		break;
 
