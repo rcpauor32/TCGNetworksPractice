@@ -28,6 +28,7 @@ MCC::MCC(Node *node, uint16_t contributedItemId, uint16_t constraintItemId) :
 
 MCC::~MCC()
 {
+
 }
 
 void MCC::update()
@@ -53,6 +54,7 @@ void MCC::update()
 		break;
 	case ST_NEGOTIATING:
 		if (negotiationAgreement() == true) {
+
 			setState(ST_UNREGISTERING);
 		}
 		else {

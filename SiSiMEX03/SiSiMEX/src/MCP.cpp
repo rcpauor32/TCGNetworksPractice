@@ -61,6 +61,7 @@ void MCP::update()
 
 	case ST_NEGOTIATING:
 		if (_ucp->agreement == true) { // Completed Negotiation
+
 			setState(ST_FINISHED);
 		}
 		else if (_ucp->agreement == false) { // Failed Negotiation
@@ -118,6 +119,11 @@ bool MCP::AskNegotiation(AgentLocation &mcc)
 
 
 	return sendPacketToAgent(mcc.hostIP, mcc.hostPort, stream);
+}
+void MCP::Exchange()
+{
+	
+
 }
 void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader, InputMemoryStream &stream)
 {

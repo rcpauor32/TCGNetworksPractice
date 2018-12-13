@@ -38,6 +38,8 @@ public:
 	bool IterateMCCs();
 	bool AskNegotiation(AgentLocation &mcc);
 
+	void Exchange();
+
 private:
 
 	bool queryMCCsForItem(int itemId);
