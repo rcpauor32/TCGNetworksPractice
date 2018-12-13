@@ -56,7 +56,7 @@ void MCC::update()
 			setState(ST_UNREGISTERING);
 		}
 		else {
-			setState(ST_IDLE);
+			setState(ST_NEGOTIATING);
 		}
 		break;
 
@@ -109,6 +109,7 @@ void MCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 			createChildUCC();
 		
 			sendAcceptNegotiation(socket, packetHeader.srcAgentId);
+			setState(ST_NEGOTIATING);
 		}
 		else
 		{

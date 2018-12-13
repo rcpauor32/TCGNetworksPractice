@@ -11,7 +11,7 @@ enum State
 	ST_ITERATING_OVER_MCCs,
 
 	// TODO: Other states
-	ST_WAITINGACCEPTANCE,
+	ST_WAITING_ACCEPTANCE,
 	ST_NEGOTIATING,
 	ST_WAITINGUCPRESULT,
 	ST_FINISHED
@@ -39,12 +39,17 @@ void MCP::update()
 		setState(ST_REQUESTING_MCCs);
 		break;
 
+	case ST_REQUESTING_MCCs:
+		// See OnPacketReceived -> PacketType::ReturnMCCsForItem
+		break;
+
 	case ST_ITERATING_OVER_MCCs:
 		// TODO: Handle this state
+		
 		break;
 
 	// TODO: Handle other states
-	case ST_WAITINGACCEPTANCE:
+	case ST_WAITING_ACCEPTANCE:
 		break;
 
 	case ST_NEGOTIATING:
@@ -67,14 +72,14 @@ void MCP::stop()
 	destroy();
 }
 
-bool MCP::IterateMCC()
+bool MCP::IterateMCCs()
 {
 	for (int i = 0; i < _mccRegisters.size(); i++) 
 	{
 		AskNegotiation(_mccRegisters[i]);
 	}
 
-	setState(ST_WAITINGACCEPTANCE);
+	setState(ST_WAITING_ACCEPTANCE);
 	return true;
 }
 
