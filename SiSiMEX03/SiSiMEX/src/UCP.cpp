@@ -101,7 +101,7 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 				setState(ST_SENDINGCONSTRAINT);
 			}
 			else {
-				createChildMCP();
+				createChildMCP(packetbody._constraintItemId);
 				setState(ST_RESOLVINGCONSTRAINT);
 			}
 		}
@@ -152,11 +152,11 @@ bool UCP::SendConstraintResult(bool res)
 	return sendPacketToAgent(uccLocation.hostIP,uccLocation.hostPort,stream);
 }
 
-void UCP::createChildMCP()
+void UCP::createChildMCP(uint16_t newRequestedId)
 {
 	if (_mcp != nullptr)
 		destroyChildMCP();
-	_mcp = App->agentContainer->createMCP(node(), requestedItemId, contributedItemId, searchDepth);
+	_mcp = App->agentContainer->createMCP(node(), newRequestedId, contributedItemId, searchDepth);
 }
 
 void UCP::destroyChildMCP()

@@ -192,8 +192,8 @@ bool MCP::negotiationFinished() const
 
 bool MCP::negotiationAgreement() const
 {
-	
-	return _ucp->agreement; // TODO: Did the child UCP find a solution?
+	iLog << _ucp->agreement;
+	return _ucp->agreement == true; // TODO: Did the child UCP find a solution?
 }
 
 
