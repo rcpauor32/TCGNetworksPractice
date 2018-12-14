@@ -187,13 +187,19 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 
 bool MCP::negotiationFinished() const
 {
-	return state() == ST_NEGOTIATING;
+	return state() == ST_FINISHED;
 }
 
 bool MCP::negotiationAgreement() const
 {
+	if(_ucp!= nullptr){
 	iLog << _ucp->agreement;
 	return _ucp->agreement == true; // TODO: Did the child UCP find a solution?
+	}
+	else {
+		return false;
+	}
+
 }
 
 

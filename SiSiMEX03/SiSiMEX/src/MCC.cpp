@@ -71,6 +71,7 @@ void MCC::update()
 	
 	case ST_FINISHED:
 		destroy();
+		iLog<<"Destroying MCC";
 		break;
 	}
 }
@@ -134,14 +135,19 @@ bool MCC::isIdling() const
 
 bool MCC::negotiationFinished() const
 {
+	
 	return state() == ST_FINISHED;
 }
 
 bool MCC::negotiationAgreement() const
 {
 	// If this agent finished, means that it was an agreement
+
 	// Otherwise, it would return to state ST_IDLE
-	return negotiationFinished();
+
+
+	return _ucc->agreement;
+	
 }
 
 bool MCC::sendAcceptNegotiation(TCPSocketPtr socket, uint16_t dstID, bool accept, AgentLocation &uccLoc)

@@ -29,7 +29,7 @@ public:
 	AgentLocation uccLocation;
 	unsigned int searchDepth;
 
-	void createChildMCP();
+	void createChildMCP(uint16_t newRequestedId);
 	void destroyChildMCP();
 
 	MCPPtr _mcp;
