@@ -61,7 +61,6 @@ void MCP::update()
 
 	case ST_NEGOTIATING:
 		if (_ucp->agreement == true) { // Completed Negotiation
-			Exchange();
 			setState(ST_FINISHED);
 		}
 		else if (_ucp->agreement == false) { // Failed Negotiation
@@ -117,14 +116,15 @@ bool MCP::AskNegotiation(AgentLocation &mcc)
 	packethead.Write(stream);
 	body.Write(stream);
 
-
+	iLog << "MCP::Asking Negotiation";
 	return sendPacketToAgent(mcc.hostIP, mcc.hostPort, stream);
 }
-void MCP::Exchange()
-{
-	node()->itemList().addItem((int)requestedItemId());
-	node()->itemList().removeItem((int)contributedItemId());
-}
+//void MCP::Exchange()
+//{
+//	iLog << "MCP::Exchange";
+//	node()->itemList().addItem((int)requestedItemId());
+//	node()->itemList().removeItem((int)contributedItemId());
+//}
 
 void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader, InputMemoryStream &stream)
 {
@@ -169,7 +169,10 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 			PacketNegotiationResponse packetBody;
 			packetBody.Read(stream);
 			if (packetBody.acceptNegotiation == true) {
+				iLog << "MCP::Accepted Negotiation";
+				iLog << packetBody.uccLoc.hostIP;
 				createChildUCP(packetBody.uccLoc);
+				setState(ST_NEGOTIATING);
 			}
 			else {
 				setState(ST_ITERATING_OVER_MCCs);
@@ -184,13 +187,13 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 
 bool MCP::negotiationFinished() const
 {
-	return state() == ST_WAITINGUCPRESULT;
+	return state() == ST_NEGOTIATING;
 }
 
 bool MCP::negotiationAgreement() const
 {
 	
-	return _ucp->agreement == true; // TODO: Did the child UCP find a solution?
+	return _ucp->agreement; // TODO: Did the child UCP find a solution?
 }
 
 

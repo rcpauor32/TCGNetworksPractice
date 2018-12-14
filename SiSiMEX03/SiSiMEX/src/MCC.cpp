@@ -54,7 +54,6 @@ void MCC::update()
 		break;
 	case ST_NEGOTIATING:
 		if (negotiationAgreement() == true) {
-			Exchange();
 			setState(ST_UNREGISTERING);
 		}
 		else {
@@ -154,11 +153,14 @@ bool MCC::sendAcceptNegotiation(TCPSocketPtr socket, uint16_t dstID, bool accept
 
 	PacketNegotiationResponse packetBody;
 	packetBody.acceptNegotiation = accept;
+	packetBody.uccLoc = uccLoc;
 
 	// Serialize
 	OutputMemoryStream stream;
 	packetHead.Write(stream);
 	packetBody.Write(stream);
+
+	iLog << "MCC::Sending NegotiationResponse";
 
 	socket->SendPacket(stream.GetBufferPtr(), stream.GetSize());
 
@@ -222,8 +224,9 @@ void MCC::destroyChildUCC()
 	}
 }
 
-void MCC::Exchange()
-{
-	node()->itemList().addItem((int)constraintItemId());
-	node()->itemList().removeItem((int)contributedItemId());
-}
+//void MCC::Exchange()
+//{
+//	iLog << "MCC::Exchange";
+//	node()->itemList().addItem((int)constraintItemId());
+//	node()->itemList().removeItem((int)contributedItemId());
+//}

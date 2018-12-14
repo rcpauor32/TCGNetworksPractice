@@ -97,6 +97,7 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 			if (searchDepth >= MAX_SEARCH_DEPTH) {
 				SendConstraintResult(false);
 				agreement = false;
+				wLog << "Max Depth Reached";
 				setState(ST_SENDINGCONSTRAINT);
 			}
 			else {
@@ -128,6 +129,8 @@ bool UCP::SendItemRequest()
 	packethead.Write(stream);
 	body.Write(stream);
 
+	iLog << "UCP::Sending ItemRequest";
+
 	return sendPacketToAgent(uccLocation.hostIP, uccLocation.hostPort, stream);
 }
 
@@ -143,6 +146,8 @@ bool UCP::SendConstraintResult(bool res)
 	OutputMemoryStream stream;
 	packethead.Write(stream);
 	body.Write(stream);
+
+	iLog << "UCP::Sending ConstraintResult";
 
 	return sendPacketToAgent(uccLocation.hostIP,uccLocation.hostPort,stream);
 }

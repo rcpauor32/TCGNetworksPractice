@@ -16,7 +16,7 @@ UCC::UCC(Node *node, uint16_t contributedItemId, uint16_t constraintItemId) :
 {
 	// TODO: Save input parameters
 	this->contributedItemId = contributedItemId;
-	this->contributedItemId = constraintItemId;
+	this->constraintItemId = constraintItemId;
 }
 
 UCC::~UCC()
@@ -50,6 +50,7 @@ void UCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 				PacketConstraintRequest oPacketBody;
 				oPacketBody._constraintItemId = constraintItemId;
 				oPacketBody.Write(ostream);
+				iLog << "UCC::Sending ConstraintRequest";
 				socket->SendPacket(ostream.GetBufferPtr(), ostream.GetSize());
 				
 				setState(ST_WAITING_ITEM_CONSTRAINT);
@@ -75,7 +76,7 @@ void UCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 			oPacketHeader.dstAgentId = packetHeader.srcAgentId;
 			OutputMemoryStream ostream;
 			oPacketHeader.Write(ostream);
-
+			iLog << "UCC::Sending ConstraintAck";
 			socket->Send(ostream.GetBufferPtr(), ostream.GetSize());
 			
 			setState(ST_NEGOTIATION_FINISHED);

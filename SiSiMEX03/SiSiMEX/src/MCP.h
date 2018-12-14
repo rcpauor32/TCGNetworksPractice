@@ -38,7 +38,7 @@ public:
 	bool IterateMCCs();
 	bool AskNegotiation(AgentLocation &mcc);
 
-	void Exchange();
+	//void Exchange();
 
 private:
 

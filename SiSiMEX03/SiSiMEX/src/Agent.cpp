@@ -31,7 +31,7 @@ bool Agent::sendPacketToYellowPages(OutputMemoryStream &stream)
 	SocketAddress yellowPagesAddress(addressAndPort);
 	int res = agentSocket->Connect(yellowPagesAddress);
 	if (res != NO_ERROR) {
-		eLog << "TCPSocket::Connect() failed";
+		eLog << "TCPSocket::Connect() to YP failed";
 		return false;
 	}
 
@@ -61,7 +61,9 @@ bool Agent::sendPacketToAgent(const std::string &ip, uint16_t port, OutputMemory
 	SocketAddress yellowPagesAddress(addressAndPort);
 	int res = agentSocket->Connect(yellowPagesAddress);
 	if (res != NO_ERROR) {
-		eLog << "TCPSocket::Connect() failed";
+		eLog << ip.c_str();
+		eLog << std::to_string(port);
+		eLog << "TCPSocket::Connect() to Agent failed";
 		return false;
 	}
 
