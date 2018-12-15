@@ -451,7 +451,7 @@ void ModuleNodeCluster::runSystem()
 			node->itemList().removeItem(mcc->contributedItemId());
 			node->itemList().addItem(mcc->constraintItemId());
 			mcc->stop();
-			dLog << "MCC exchange at Node " << node->id() << ":"
+			iLog << "MCC exchange at Node " << node->id() << ":"
 				<< " -" << mcc->contributedItemId()
 				<< " +" << mcc->constraintItemId();
 		}
@@ -466,7 +466,7 @@ void ModuleNodeCluster::runSystem()
 			{
 				node->itemList().addItem(mcp->requestedItemId());
 				node->itemList().removeItem(mcp->contributedItemId());
-				dLog << "MCP exchange at Node " << node->id() << ":"
+				iLog << "MCP exchange at Node " << node->id() << ":"
 					<< " -" << mcp->contributedItemId()
 					<< " +" << mcp->requestedItemId();
 			}

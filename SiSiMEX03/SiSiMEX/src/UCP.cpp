@@ -90,7 +90,6 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		if (packetbody._constraintItemId == this->contributedItemId) {
 			agreement = true;
 			SendConstraintResult(true);
-			contributedItemId = packetbody._constraintItemId;
 			setState(ST_SENDINGCONSTRAINT);
 		}
 		else
@@ -166,11 +165,6 @@ void UCP::destroyChildMCP()
 		_mcp->stop();
 		_mcp.reset();
 	}
-}
-
-bool UCP::negotiationFinished()
-{
-	return state() == ST_NEGOTIATIONFINISHED;
 }
 
 

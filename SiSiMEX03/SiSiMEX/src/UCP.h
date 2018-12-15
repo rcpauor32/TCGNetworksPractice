@@ -32,8 +32,6 @@ public:
 	void createChildMCP(uint16_t newRequestedId);
 	void destroyChildMCP();
 
-	bool negotiationFinished();
-
 	MCPPtr _mcp;
 
 };

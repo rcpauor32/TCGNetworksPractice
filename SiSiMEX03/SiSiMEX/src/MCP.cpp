@@ -60,17 +60,15 @@ void MCP::update()
 		break;
 
 	case ST_NEGOTIATING:
-		if (_ucp != nullptr) {
-			if (_ucp->negotiationFinished() == true) {
-				if (_ucp->agreement == true) { // Completed Negotiation
-					_contributedItemId = _ucp->contributedItemId;
-					setState(ST_FINISHED);
-				}
-				else if (_ucp->agreement == false) { // Failed Negotiation
-					setState(ST_ITERATING_OVER_MCCs);
-					_mccRegisterIndex++;
-				}
-			}
+		if (_ucp->agreement == true) { // Completed Negotiation
+			setState(ST_FINISHED);
+		}
+		else if (_ucp->agreement == false) { // Failed Negotiation
+			setState(ST_ITERATING_OVER_MCCs);
+			_mccRegisterIndex++;
+		}
+		else { // Negotiating
+
 		}
 		break;
 

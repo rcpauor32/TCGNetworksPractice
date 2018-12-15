@@ -100,7 +100,7 @@ void MCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		}
 		else
 		{
-			wLog << "MCC::OnPacketReceived() - PacketType::RegisterMCCAck was unexpected.";
+			wLog << "OnPacketReceived() - PacketType::RegisterMCCAck was unexpected.";
 		}
 		break;
 
@@ -120,11 +120,11 @@ void MCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		{
 			AgentLocation uccLoc;
 			sendAcceptNegotiation(socket, packetHeader.srcAgentId, false, uccLoc);
-			wLog << "MCC::OnPacketReceived() - PacketType::NegotiationRequest was unexpected.";
+			wLog << "OnPacketReceived() - PacketType::NegotiationRequest was unexpected.";
 		}
 		break;
 	default:
-		wLog << "MCC::OnPacketReceived() - Unexpected PacketType.";
+		wLog << "OnPacketReceived() - Unexpected PacketType.";
 	}
 }
 
@@ -146,7 +146,7 @@ bool MCC::negotiationAgreement() const
 	// Otherwise, it would return to state ST_IDLE
 
 
-	return _ucc->agreement == true;
+	return _ucc->agreement;
 	
 }
 
