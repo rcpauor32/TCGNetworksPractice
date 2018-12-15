@@ -60,12 +60,14 @@ void MCP::update()
 		break;
 
 	case ST_NEGOTIATING:
-		if (_ucp->agreement == true) { // Completed Negotiation
-			setState(ST_FINISHED);
-		}
-		else if (_ucp->agreement == false) { // Failed Negotiation
-			setState(ST_ITERATING_OVER_MCCs);
-			_mccRegisterIndex++;
+		if (_ucp != nullptr && _ucp->negotiationFinished() == true) {
+			if (_ucp->agreement == true) { // Completed Negotiation
+				setState(ST_FINISHED);
+			}
+			else if (_ucp->agreement == false) { // Failed Negotiation
+				setState(ST_ITERATING_OVER_MCCs);
+				_mccRegisterIndex++;
+			}
 		}
 		else { // Negotiating
 
@@ -159,7 +161,7 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		}
 		else
 		{
-			wLog << "OnPacketReceived() - PacketType::ReturnMCCsForItem was unexpected.";
+			wLog << "MCP::OnPacketReceived() - PacketType::ReturnMCCsForItem was unexpected.";
 		}
 		break;
 
@@ -181,7 +183,7 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		}
 		break;
 	default:
-		wLog << "OnPacketReceived() - Unexpected PacketType.";
+		wLog << "MCP::OnPacketReceived() - Unexpected PacketType.";
 	}
 }
 

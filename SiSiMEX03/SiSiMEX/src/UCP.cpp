@@ -112,7 +112,7 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		break;
 
 	default:
-		wLog << "OnPacketReceived() - Unexpected PacketType.";
+		wLog << "UCP::OnPacketReceived() - Unexpected PacketType.";
 	}
 }
 
@@ -147,7 +147,7 @@ bool UCP::SendConstraintResult(bool res)
 	packethead.Write(stream);
 	body.Write(stream);
 
-	iLog << "UCP::Sending ConstraintResult";
+	iLog << "UCP::Sending ConstraintResult: %b", res;
 
 	return sendPacketToAgent(uccLocation.hostIP,uccLocation.hostPort,stream);
 }
@@ -165,6 +165,11 @@ void UCP::destroyChildMCP()
 		_mcp->stop();
 		_mcp.reset();
 	}
+}
+
+bool UCP::negotiationFinished()
+{
+	return state() == ST_NEGOTIATIONFINISHED;
 }
 
 
