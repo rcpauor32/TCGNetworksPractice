@@ -62,6 +62,7 @@ void MCP::update()
 	case ST_NEGOTIATING:
 		if (_ucp != nullptr && _ucp->negotiationFinished() == true) {
 			if (_ucp->agreement == true) { // Completed Negotiation
+				_searchDepth = 0;
 				setState(ST_FINISHED);
 			}
 			else if (_ucp->agreement == false) { // Failed Negotiation
@@ -88,6 +89,8 @@ void MCP::update()
 void MCP::stop()
 {
 	// TODO: Destroy the underlying search hierarchy (UCP->MCP->UCP->...)
+	iLog << "Destroying MCP";
+
 	destroyChildUCP();
 	destroy();
 }

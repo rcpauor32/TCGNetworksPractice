@@ -25,6 +25,7 @@ UCC::~UCC()
 
 void UCC::stop()
 {
+	iLog << "Destroying UCC";
 	destroy();
 }
 

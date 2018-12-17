@@ -478,6 +478,7 @@ void ModuleNodeCluster::runSystem()
 			}
 			mcp->stop();
 		}
+		
 	}
 
 	// WARNING:

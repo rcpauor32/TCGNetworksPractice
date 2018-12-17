@@ -50,6 +50,7 @@ void UCP::update()
 			if (_mcp->negotiationAgreement()) {
 				SendConstraintResult(true);
 				agreement = true;
+				
 			}
 			else {
 				SendConstraintResult(false);
@@ -73,6 +74,7 @@ void UCP::update()
 void UCP::stop()
 {
 	// TODO: Destroy search hierarchy below this agent
+	iLog << "Destroying UCP";
 	destroyChildMCP();
 	destroy();
 }
@@ -110,6 +112,7 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 
 	case PacketType::ConstraintAck:
 		setState(ST_NEGOTIATIONFINISHED);
+		iLog << "Constraint aknowledged";
 		break;
 
 	default:

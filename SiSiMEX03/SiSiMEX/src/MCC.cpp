@@ -53,8 +53,8 @@ void MCC::update()
 		// See OnPacketReceived() -> PacketType::NegotiationRequest
 		break;
 	case ST_NEGOTIATING:
-		if (negotiationAgreement() == true) {
-			setState(ST_UNREGISTERING);
+		if (negotiationAgreement()) {
+			setState(ST_FINISHED);
 		}
 		else {
 			setState(ST_NEGOTIATING);
@@ -65,13 +65,12 @@ void MCC::update()
 		break;
 
 	case ST_UNREGISTERING:
-		unregisterFromYellowPages();
-		setState(ST_FINISHED);
+	
 		break;
 	
 	case ST_FINISHED:
-		destroy();
-		iLog<<"Destroying MCC";
+		
+		
 		break;
 	}
 }
@@ -80,9 +79,10 @@ void MCC::stop()
 {
 	// Destroy hierarchy below this agent (only a UCC, actually)
 	destroyChildUCC();
-
+	iLog << "Stopping MCC";
 	unregisterFromYellowPages();
-	setState(ST_FINISHED);
+	destroy();
+	iLog << "Destroying MCC";
 }
 
 
