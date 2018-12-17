@@ -146,7 +146,7 @@ bool MCC::negotiationAgreement() const
 	// Otherwise, it would return to state ST_IDLE
 
 
-	return _ucc->agreement;
+	return _ucc->agreement == true;
 	
 }
 
@@ -166,7 +166,8 @@ bool MCC::sendAcceptNegotiation(TCPSocketPtr socket, uint16_t dstID, bool accept
 	packetHead.Write(stream);
 	packetBody.Write(stream);
 
-	iLog << "MCC::Sending NegotiationResponse";
+	iLog << "MCC::Sending Negotiation Response";
+	iLog << accept;
 
 	socket->SendPacket(stream.GetBufferPtr(), stream.GetSize());
 
@@ -214,7 +215,7 @@ void MCC::createChildUCC()
 	// TODO: Create a unicast contributor
 	if (_ucc != nullptr)
 		destroyChildUCC();
-
+	iLog << "MCC::Creating Child UCC";
 	_ucc = App->agentContainer->createUCC(node(), contributedItemId(), constraintItemId());
 
 }

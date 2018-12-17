@@ -101,6 +101,7 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 				setState(ST_SENDINGCONSTRAINT);
 			}
 			else {
+				iLog << "UCP::Constraint Unresolved";
 				createChildMCP(packetbody._constraintItemId);
 				setState(ST_RESOLVINGCONSTRAINT);
 			}
@@ -147,7 +148,8 @@ bool UCP::SendConstraintResult(bool res)
 	packethead.Write(stream);
 	body.Write(stream);
 
-	iLog << "UCP::Sending ConstraintResult: %b", res;
+	iLog << "UCP::Sending Constraint Result:";
+	iLog << res;
 
 	return sendPacketToAgent(uccLocation.hostIP,uccLocation.hostPort,stream);
 }
@@ -156,6 +158,7 @@ void UCP::createChildMCP(uint16_t newRequestedId)
 {
 	if (_mcp != nullptr)
 		destroyChildMCP();
+	iLog << "UCP::Creating Child MCP";
 	_mcp = App->agentContainer->createMCP(node(), newRequestedId, contributedItemId, searchDepth);
 }
 

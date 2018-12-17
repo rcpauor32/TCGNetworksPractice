@@ -228,6 +228,7 @@ void MCP::createChildUCP(AgentLocation &ucc)
 {
 	if (_ucp != nullptr)
 		destroyChildUCP();
+	iLog << "MCP::Creating Child UCP";
 	_ucp = App->agentContainer->createUCP(node(), requestedItemId(), contributedItemId(), ucc, searchDepth() + 1);
 }
 
