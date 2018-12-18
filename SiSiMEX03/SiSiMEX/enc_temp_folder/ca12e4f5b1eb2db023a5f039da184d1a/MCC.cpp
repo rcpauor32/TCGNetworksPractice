@@ -55,7 +55,7 @@ void MCC::update()
 	case ST_NEGOTIATING:
 		if (_ucc != nullptr && _ucc->negotiationFinished() == true) {
 			if (negotiationAgreement()) {
-				setState(ST_FINISHED);																	////// SISMISMEISIAIE
+				setState(ST_FINISHED);
 			}
 			destroyChildUCC();
 		}
