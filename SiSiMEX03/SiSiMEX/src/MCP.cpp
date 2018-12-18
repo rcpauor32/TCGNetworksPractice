@@ -114,13 +114,8 @@ bool MCP::AskNegotiation(AgentLocation &mcc)
 	packethead.dstAgentId = mcc.agentId;
 	packethead.srcAgentId = this->id();
 
-	PacketNegotiationRequest body;
-	body._requestedItemId = requestedItemId();
-	body._contributedItemId = contributedItemId();
-
 	OutputMemoryStream stream;
 	packethead.Write(stream);
-	body.Write(stream);
 
 	iLog << "MCP::Asking Negotiation";
 	return sendPacketToAgent(mcc.hostIP, mcc.hostPort, stream);
