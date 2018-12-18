@@ -40,23 +40,20 @@ void UCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		if (state() == ST_WAITING_ITEM_REQUEST) {
 			PacketItemRequest packetBody;
 			packetBody.Read(stream);
-			if (packetBody._requestedItemId == contributedItemId) {
-				// Sending ConstraintRequest to UCP
-				PacketHeader oPacketHeader;
-				oPacketHeader.srcAgentId = id();
-				oPacketHeader.dstAgentId = packetHeader.srcAgentId;
-				oPacketHeader.packetType = PacketType::ConstraintRequest;
-				OutputMemoryStream ostream;
-				oPacketHeader.Write(ostream);
-				PacketConstraintRequest oPacketBody;
-				oPacketBody._constraintItemId = constraintItemId;
-				oPacketBody.Write(ostream);
-				iLog << "UCC::Sending ConstraintRequest";
-				socket->SendPacket(ostream.GetBufferPtr(), ostream.GetSize());
-				
-				setState(ST_WAITING_ITEM_CONSTRAINT);
-
-			}
+			// Sending ConstraintRequest to UCP
+			PacketHeader oPacketHeader;
+			oPacketHeader.srcAgentId = id();
+			oPacketHeader.dstAgentId = packetHeader.srcAgentId;
+			oPacketHeader.packetType = PacketType::ConstraintRequest;
+			OutputMemoryStream ostream;
+			oPacketHeader.Write(ostream);
+			PacketConstraintRequest oPacketBody;
+			oPacketBody._constraintItemId = constraintItemId;
+			oPacketBody.Write(ostream);
+			iLog << "UCC::Sending ConstraintRequest";
+			socket->SendPacket(ostream.GetBufferPtr(), ostream.GetSize());
+			
+			setState(ST_WAITING_ITEM_CONSTRAINT);
 		}
 		else {
 			wLog << "UCC::PacketReceived() - Unexpected Item Request";
@@ -81,7 +78,7 @@ void UCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 			OutputMemoryStream ostream;
 			oPacketHeader.Write(ostream);
 			iLog << "UCC::Sending ConstraintAck";
-			socket->Send(ostream.GetBufferPtr(), ostream.GetSize());
+			socket->SendPacket(ostream.GetBufferPtr(), ostream.GetSize());
 			
 			setState(ST_NEGOTIATION_FINISHED);
 		}

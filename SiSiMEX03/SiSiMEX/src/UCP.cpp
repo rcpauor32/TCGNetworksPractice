@@ -113,8 +113,13 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		break;
 
 	case PacketType::ConstraintAck:
-		setState(ST_NEGOTIATIONFINISHED);
-		iLog << "Constraint aknowledged";
+		if (state() == ST_SENDINGCONSTRAINT) {
+			setState(ST_NEGOTIATIONFINISHED);
+			iLog << "UCP::Constraint aknowledged";
+		}
+		else {
+			iLog << "UCP::OnPacketReceived() - Unexpected ConstraintAck";
+		}
 		break;
 
 	default:

@@ -226,8 +226,8 @@ void MCC::destroyChildUCC()
 	if (_ucc != nullptr) 
 	{
 		_ucc->stop();
-		_ucc.reset();
 	}
+	_ucc.reset();
 }
 
 //void MCC::Exchange()

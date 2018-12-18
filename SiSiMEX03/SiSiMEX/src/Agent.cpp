@@ -85,7 +85,7 @@ void Agent::destroy()
 
 	// Disconnect all sockets used by this agent
 	for (auto socket : _sockets) {
-		iLog << "Socket::Disconnect";
+		//iLog << "Socket::Disconnect";
 		socket->Disconnect();
 	}
 	_sockets.clear();
