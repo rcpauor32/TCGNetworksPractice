@@ -96,3 +96,8 @@ bool UCC::negotiationAgreement()
 {
 	return (state() == ST_NEGOTIATION_FINISHED && agreement == true);
 }
+
+bool UCC::negotiationFinished()
+{
+	return state() == ST_NEGOTIATION_FINISHED;
+}

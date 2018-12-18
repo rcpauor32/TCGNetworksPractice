@@ -53,11 +53,11 @@ void MCC::update()
 		// See OnPacketReceived() -> PacketType::NegotiationRequest
 		break;
 	case ST_NEGOTIATING:
-		if (negotiationAgreement()) {
-			setState(ST_FINISHED);
-		}
-		else {
-			setState(ST_NEGOTIATING);
+		if (_ucc != nullptr && _ucc->negotiationFinished() == true) {
+			if (negotiationAgreement()) {
+				setState(ST_FINISHED);
+			}
+			destroyChildUCC();
 		}
 		break;
 
@@ -226,8 +226,8 @@ void MCC::destroyChildUCC()
 	if (_ucc != nullptr) 
 	{
 		_ucc->stop();
+		_ucc.reset();
 	}
-	_ucc.reset();
 }
 
 //void MCC::Exchange()

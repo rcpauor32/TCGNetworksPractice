@@ -21,6 +21,7 @@ public:
 	int agreement = -1;
 
 	bool negotiationAgreement();
+	bool negotiationFinished();
 
 	uint16_t contributedItemId;
 	uint16_t constraintItemId;
