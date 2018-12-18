@@ -58,6 +58,9 @@ void UCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 
 			}
 		}
+		else {
+			wLog << "UCC::PacketReceived() - Unexpected Item Request";
+		}
 		break;
 	
 	case PacketType::ConstraintResult:
@@ -82,9 +85,17 @@ void UCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 			
 			setState(ST_NEGOTIATION_FINISHED);
 		}
+		else {
+			wLog << "UCC::PacketReceived() - Unexpected Constraint Result";
+		}
 		break;
 
 	default:
 		wLog << "OnPacketReceived() - Unexpected PacketType.";
 	}
+}
+
+bool UCC::negotiationAgreement()
+{
+	return (state() == ST_NEGOTIATION_FINISHED && agreement == true);
 }

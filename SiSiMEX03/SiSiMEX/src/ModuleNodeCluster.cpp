@@ -338,6 +338,7 @@ void ModuleNodeCluster::OnPacketReceived(TCPSocketPtr socket, InputMemoryStream 
 	auto agentPtr = App->agentContainer->getAgent(packetHead.dstAgentId);
 	if (agentPtr != nullptr)
 	{
+		iLog << "NodeCluster::AgentPtr -> OnPacketReceived()";
 		agentPtr->OnPacketReceived(socket, packetHead, stream);
 	}
 	else

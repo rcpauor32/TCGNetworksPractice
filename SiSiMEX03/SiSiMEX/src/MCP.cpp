@@ -79,6 +79,7 @@ void MCP::update()
 		break;
 
 	case ST_FINISHED:
+		destroyChildUCP();
 		break;
 
 	default:;
@@ -175,7 +176,6 @@ void MCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 			packetBody.Read(stream);
 			if (packetBody.acceptNegotiation == true) {
 				iLog << "MCP::Accepted Negotiation";
-				iLog << packetBody.uccLoc.hostIP;
 				createChildUCP(packetBody.uccLoc);
 				setState(ST_NEGOTIATING);
 			}
@@ -198,7 +198,6 @@ bool MCP::negotiationFinished() const
 bool MCP::negotiationAgreement() const
 {
 	if(_ucp!= nullptr){
-	iLog << _ucp->agreement;
 	return _ucp->agreement == true; // TODO: Did the child UCP find a solution?
 	}
 	else {

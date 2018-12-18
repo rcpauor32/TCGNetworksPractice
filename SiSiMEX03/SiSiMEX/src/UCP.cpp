@@ -83,6 +83,8 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 {
 	PacketType packetType = packetHeader.packetType;
 
+	iLog << "UCP::OnPacketReceived()";
+
 	switch (packetType)
 	{
 		// TODO: Handle packets
@@ -97,8 +99,8 @@ void UCP::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		else
 		{
 			if (searchDepth >= MAX_SEARCH_DEPTH) {
-				SendConstraintResult(false);
 				agreement = false;
+				SendConstraintResult(false);
 				wLog << "Max Depth Reached";
 				setState(ST_SENDINGCONSTRAINT);
 			}

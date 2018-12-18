@@ -69,8 +69,7 @@ void MCC::update()
 		break;
 	
 	case ST_FINISHED:
-		
-		
+		destroyChildUCC();
 		break;
 	}
 }
@@ -79,7 +78,6 @@ void MCC::stop()
 {
 	// Destroy hierarchy below this agent (only a UCC, actually)
 	destroyChildUCC();
-	iLog << "Stopping MCC";
 	unregisterFromYellowPages();
 	destroy();
 	iLog << "Destroying MCC";
@@ -100,7 +98,7 @@ void MCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		}
 		else
 		{
-			wLog << "OnPacketReceived() - PacketType::RegisterMCCAck was unexpected.";
+			wLog << "MCC::OnPacketReceived() - PacketType::RegisterMCCAck was unexpected.";
 		}
 		break;
 
@@ -120,11 +118,12 @@ void MCC::OnPacketReceived(TCPSocketPtr socket, const PacketHeader &packetHeader
 		{
 			AgentLocation uccLoc;
 			sendAcceptNegotiation(socket, packetHeader.srcAgentId, false, uccLoc);
-			wLog << "OnPacketReceived() - PacketType::NegotiationRequest was unexpected.";
+			wLog << "MCC::OnPacketReceived() - PacketType::NegotiationRequest was unexpected.";
 		}
 		break;
 	default:
-		wLog << "OnPacketReceived() - Unexpected PacketType.";
+		wLog << "MCC::OnPacketReceived() - Unexpected PacketType.";
+		break;
 	}
 }
 
@@ -146,7 +145,7 @@ bool MCC::negotiationAgreement() const
 	// Otherwise, it would return to state ST_IDLE
 
 
-	return _ucc->agreement == true;
+	return _ucc->negotiationAgreement() == true;
 	
 }
 
